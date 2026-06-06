@@ -10,8 +10,9 @@ Agent-native CLI for the Wafer AI security gateway.
 ## Setup
 
 ```bash
-npm i -g @wafersecurity/cli        # or: node packages/cli/src/cli.js <cmd>
-export WAFER_API_KEY=wafer_sk_...  # console → Agents → API keys
+npm i -g @wafersecurity/cli
+wafer login                        # paste an API key (console → API keys); saved to ~/.wafer/config.json
+# or: export WAFER_API_KEY=wafer_sk_...
 wafer whoami                       # verify
 ```
 
