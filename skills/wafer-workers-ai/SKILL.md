@@ -41,9 +41,10 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
   no added latency; redaction happens before the model sees the prompt.
 - The optional LLM judge runs via the Worker's own `env.AI` binding (no extra
   Wafer round-trip) against the policy set in the console.
-- Policy is fetched from the project config (cached); analytics are logged to
-  Wafer (metadata by default; `log:"content"` to include request/response,
-  `log:"off"` to disable).
+- Policy + telemetry settings are fetched from the project config (cached).
+  Logs model, decision, findings, tokens and latency; request/response content
+  is captured when the project enables it (override: `log:"metadata"` never,
+  `log:"content"` always, `log:"off"` disable).
 - Fail-open: if Wafer is unreachable, the AI call still runs.
 - Streaming (`{ stream: true }`): the wrapper blocks the stream on a secret/blocklist
   hit; mid-stream redaction is not applied (use non-streaming for output redaction).
