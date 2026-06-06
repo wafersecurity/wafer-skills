@@ -46,8 +46,9 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
   is captured when the project enables it (override: `log:"metadata"` never,
   `log:"content"` always, `log:"off"` disable).
 - Fail-open: if Wafer is unreachable, the AI call still runs.
-- Streaming (`{ stream: true }`): the wrapper blocks the stream on a secret/blocklist
-  hit; mid-stream redaction is not applied (use non-streaming for output redaction).
+- Streaming (`{ stream: true }`): chunks pass through with zero added latency; the
+  full response is captured and logged after the stream ends. Block-action
+  guardrails still cut the stream on a hit; mid-stream redaction isn't applied.
 
 ## When NOT to use this
 
