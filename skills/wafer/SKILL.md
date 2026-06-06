@@ -9,12 +9,16 @@ Wafer sits between an app and the LLM provider. You point your existing OpenAI o
 Anthropic SDK at a project's **gateway URL** (keeping your own API key), and Wafer
 applies guardrails to every request and response.
 
-A project's gateway URLs look like:
+A project's gateway URLs are uniform — `https://wafersecurity.ai/p/<project>/<provider>`:
 
 ```
-OpenAI:    https://wafersecurity.ai/p/<project>/openai/v1
+OpenAI:    https://wafersecurity.ai/p/<project>/openai
 Anthropic: https://wafersecurity.ai/p/<project>/anthropic
+Gemini:    https://wafersecurity.ai/p/<project>/gemini
+Mistral:   https://wafersecurity.ai/p/<project>/mistral
 ```
+
+Other providers: groq, deepseek, xai, together, openrouter, perplexity, fireworks.
 
 ## Which skill to use
 

@@ -12,7 +12,7 @@ Goal: route the app's existing LLM calls through the project's Wafer gateway URL
 
 1. **Find the project's gateway URL.** Ask the user for the project id (or run
    `wafer init <project> --json`). The URLs are:
-   - OpenAI: `https://wafersecurity.ai/p/<project>/openai/v1`
+   - OpenAI: `https://wafersecurity.ai/p/<project>/openai`
    - Anthropic: `https://wafersecurity.ai/p/<project>/anthropic`
 
 2. **Locate where the SDK client is constructed** (search for `OpenAI(`,
@@ -22,11 +22,11 @@ Goal: route the app's existing LLM calls through the project's Wafer gateway URL
 
    Python (OpenAI):
    ```python
-   client = OpenAI(api_key=OPENAI_KEY, base_url="https://wafersecurity.ai/p/<project>/openai/v1")
+   client = OpenAI(api_key=OPENAI_KEY, base_url="https://wafersecurity.ai/p/<project>/openai")
    ```
    TypeScript (OpenAI):
    ```ts
-   const client = new OpenAI({ apiKey: OPENAI_KEY, baseURL: "https://wafersecurity.ai/p/<project>/openai/v1" });
+   const client = new OpenAI({ apiKey: OPENAI_KEY, baseURL: "https://wafersecurity.ai/p/<project>/openai" });
    ```
    Anthropic:
    ```ts
