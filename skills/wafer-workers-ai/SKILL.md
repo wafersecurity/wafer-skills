@@ -42,7 +42,8 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 - The optional LLM judge runs via the Worker's own `env.AI` binding (no extra
   Wafer round-trip) against the policy set in the console.
 - Policy is fetched from the project config (cached); analytics are logged to
-  Wafer (metadata only — no prompt/response content; set `log:"off"` to disable).
+  Wafer (metadata by default; `log:"content"` to include request/response,
+  `log:"off"` to disable).
 - Fail-open: if Wafer is unreachable, the AI call still runs.
 - Streaming (`{ stream: true }`): the wrapper blocks the stream on a secret/blocklist
   hit; mid-stream redaction is not applied (use non-streaming for output redaction).
