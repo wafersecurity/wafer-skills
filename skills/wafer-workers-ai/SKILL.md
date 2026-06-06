@@ -16,10 +16,12 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 3. Instrument. Two ways:
 
    **One line (no per-call changes)** — wrap the default export; set
-   `WAFER_PROJECT` + `WAFER_API_KEY` secrets. Every `env.AI.run` is auto-guarded:
+   `WAFER_PROJECT` + `WAFER_API_KEY` secrets. Every `env.AI.run` is auto-guarded
+   across ALL handlers (fetch, queue, scheduled, tail) — safe for cron + queue
+   consumers:
    ```js
    import { withWafer } from "@wafersecurity/workers-ai";
-   export default withWafer(handler);
+   export default withWafer(handler);   // handler can have fetch/queue/scheduled
    ```
 
    **Explicit** — wrap the binding and use `ai.run`:
@@ -42,6 +44,8 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 - Policy is fetched from the project config (cached); analytics are logged to
   Wafer (metadata only — no prompt/response content; set `log:"off"` to disable).
 - Fail-open: if Wafer is unreachable, the AI call still runs.
+- Streaming (`{ stream: true }`): the wrapper blocks the stream on a secret/blocklist
+  hit; mid-stream redaction is not applied (use non-streaming for output redaction).
 
 ## When NOT to use this
 
