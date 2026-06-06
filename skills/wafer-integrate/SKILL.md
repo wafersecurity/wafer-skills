@@ -32,6 +32,14 @@ Goal: route the app's existing LLM calls through the project's Wafer gateway URL
    ```ts
    const client = new Anthropic({ apiKey: ANTHROPIC_KEY, baseURL: "https://wafersecurity.ai/p/<project>/anthropic" });
    ```
+   Gemini (native google-genai SDK):
+   ```python
+   client = genai.Client(api_key=GEMINI_KEY, http_options={"base_url": "https://wafersecurity.ai/p/<project>/gemini"})
+   ```
+
+   OpenAI, Anthropic, Mistral and Gemini use their native SDKs/endpoints. Other
+   providers (Groq, DeepSeek, xAI, Together, OpenRouter, Perplexity, Fireworks)
+   are OpenAI-compatible — use the OpenAI SDK pointed at `/p/<project>/<provider>`.
 
    Prefer an env var so it's configurable: `OPENAI_BASE_URL` / a `WAFER_BASE_URL`.
 
