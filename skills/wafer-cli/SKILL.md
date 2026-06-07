@@ -30,6 +30,10 @@ wafer guardrails set my-app pii redact  # rule: secrets|pii|blocklist|injection
 wafer cache my-app on
 wafer ratelimit my-app 60               # or: off
 wafer budget my-app 1000000             # or: off
+wafer spend my-app 5                     # $5/day  (or: off, or: monthly 100)
+wafer retry my-app 2 gpt-4o-mini         # retries + fallback model (or: off)
+wafer webhook my-app https://ingest.heystack.dev/wafer   # stream decisions (or: off)
+wafer export my-app csv                   # export logs for audit (csv|json)
 
 wafer test my-app "email me at jane@acme.com"   # run guardrails, no model call
 wafer logs my-app --limit 20

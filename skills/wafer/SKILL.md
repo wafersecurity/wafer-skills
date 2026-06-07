@@ -30,6 +30,8 @@ Other providers: groq, deepseek, xai, together, openrouter, perplexity, firework
 
 - **Bring your own key (BYOK):** the provider key passes straight through; Wafer never stores it.
 - **One-line integration:** only the base URL changes — no SDK to learn.
-- **Guardrails:** secrets, PII, blocklist, prompt-injection, semantic cache, rate limit, daily token budget. Each is `block | redact | flag | off`.
+- **Guardrails:** secrets, PII, blocklist, prompt-injection, semantic cache, rate limit, daily token budget, USD spend limit (per day/month). Each guardrail is `block | redact | flag | off`.
+- **Reliability:** optional provider retries (429/5xx) with backoff and an optional same-provider fallback model.
+- **Observability:** stream decisions to a webhook sink (native heystack.dev integration) and export request logs as CSV/JSON for audit. Webhook events are metadata-only.
 - **Programmatic access:** the admin API and CLI authenticate with a `WAFER_API_KEY` (create one in the console → Agents → API keys).
 - **Console:** https://console.wafersecurity.ai · **Site:** https://wafersecurity.ai

@@ -31,6 +31,11 @@ wafer guardrails set <project> injection block
 wafer cache <project> on            # semantic cache (skips the model on near-identical prompts)
 wafer ratelimit <project> 60        # 60 requests/minute  (off to disable)
 wafer budget <project> 1000000      # 1M tokens/day        (off to disable)
+wafer spend <project> 5             # $5/day USD spend cap (off to disable)
+wafer spend <project> monthly 100   # $100/month spend cap
+wafer retry <project> 2 gpt-4o-mini # retry transient failures, fall back to a cheaper model (off to disable)
+wafer webhook <project> <url>       # stream decisions to a sink, e.g. heystack.dev (off to disable)
+wafer export <project> csv          # export request logs for audit (csv|json)
 ```
 
 ## Admin API (equivalent)
@@ -40,7 +45,8 @@ and a JSON body, e.g.:
 
 ```json
 { "guardrails": { "pii": { "action": "redact" }, "injection": { "action": "block" } },
-  "semanticCache": { "enabled": true }, "rateLimit": { "enabled": true, "rpm": 60 } }
+  "semanticCache": { "enabled": true }, "rateLimit": { "enabled": true, "rpm": 60 },
+  "spendCap": { "enabled": true, "maxUsdPerDay": 5, "maxUsdPerMonth": 100, "fallbackUsdPerMTok": 5 } }
 ```
 
 ## Verify
