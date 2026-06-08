@@ -29,6 +29,8 @@ wafer guardrails set <project> injection block
 
 ```bash
 wafer cache <project> on            # semantic cache (skips the model on near-identical prompts)
+# Isolate cached answers per request with the x-wafer-cache-scope header (e.g. an episode id).
+# Mistral/Gemini batch: the uploaded JSONL is Tier-0 guardrailed per line (block rejects the upload; redact rewrites in place).
 wafer ratelimit <project> 60        # 60 requests/minute  (off to disable)
 wafer budget <project> 1000000      # 1M tokens/day        (off to disable)
 wafer spend <project> 5             # $5/day USD spend cap (off to disable)
@@ -36,6 +38,18 @@ wafer spend <project> monthly 100   # $100/month spend cap
 wafer retry <project> 2 gpt-4o-mini # retry transient failures, fall back to a cheaper model (off to disable)
 wafer webhook <project> <url>       # stream decisions to a sink, e.g. heystack.dev (off to disable)
 wafer export <project> csv          # export request logs for audit (csv|json)
+```
+
+## Profiles (per-request posture under one project)
+
+Define named overrides and select one per request with the `x-wafer-profile`
+header (or the Workers AI wrapper's `profile` option). A profile overrides only
+the guardrails/cache it names; the rest inherits the project default.
+
+```bash
+wafer profile <project> set interrupt '{"guardrails":{"injection":{"action":"block"},"pii":{"action":"off"}}}'
+wafer profile <project> list
+wafer profile <project> rm interrupt
 ```
 
 ## Admin API (equivalent)

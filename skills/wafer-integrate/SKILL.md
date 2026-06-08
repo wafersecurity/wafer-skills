@@ -54,3 +54,7 @@ Goal: route the app's existing LLM calls through the project's Wafer gateway URL
 - Do not hardcode secrets; read them from the existing env vars.
 - Only edit the client construction; leave call sites untouched.
 - If the app uses streaming, no change is needed — Wafer is streaming-aware.
+- A blocked request returns HTTP `403` with `x-wafer-blocked: 1` and
+  `x-wafer-categories` (the provider-shaped JSON body is caught by the SDK's own
+  error handling). On a stream the block is a final `data:` event with the same
+  `blocked` flag + `categories`. Map both to one "blocked" response.

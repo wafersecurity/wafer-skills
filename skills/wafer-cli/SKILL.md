@@ -27,6 +27,7 @@ wafer projects delete my-app
 
 wafer guardrails get my-app
 wafer guardrails set my-app pii redact  # rule: secrets|pii|blocklist|injection
+wafer profile my-app set interrupt '{"guardrails":{"injection":{"action":"block"}}}'  # per-request posture (x-wafer-profile)
 wafer cache my-app on
 wafer ratelimit my-app 60               # or: off
 wafer budget my-app 1000000             # or: off

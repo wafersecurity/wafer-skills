@@ -33,7 +33,9 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 
 - `ai.run(model, inputs, options)` is a drop-in for `env.AI.run`.
 - Pass the Worker's `ctx` (ExecutionContext) so logging is non-blocking.
-- Blocked inputs throw `WaferBlockedError`; catch it and return a 4xx.
+- Blocked inputs throw `WaferBlockedError`; catch it and return a 4xx. The error
+  exposes `.categories` (e.g. `["pii","injection"]`) — the same value the gateway
+  sends as the `x-wafer-categories` header, so one handler covers binding + gateway.
 
 ## How it behaves
 
@@ -41,10 +43,16 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
   no added latency; redaction happens before the model sees the prompt.
 - The optional LLM judge runs via the Worker's own `env.AI` binding (no extra
   Wafer round-trip) against the policy set in the console.
+- Pass `profile: "<name>"` in opts to apply a named posture override from the
+  project (the binding equivalent of the gateway's `x-wafer-profile` header).
 - Policy + telemetry settings are fetched from the project config (cached).
   Logs model, decision, findings, tokens and latency; request/response content
   is captured when the project enables it (override: `log:"metadata"` never,
   `log:"content"` always, `log:"off"` disable).
+- Speech-to-text (Whisper / Deepgram): the returned transcript is screened by the
+  **input** guardrails before it feeds a downstream model — spoken injection or
+  blocklisted phrases are caught. A blocked transcript throws `WaferBlockedError`;
+  a redacted one rewrites `res.text`.
 - Fail-open: if Wafer is unreachable, the AI call still runs.
 - Streaming (`{ stream: true }`): chunks pass through with zero added latency; the
   full response is captured and logged after the stream ends. Block-action
