@@ -36,6 +36,10 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 - Blocked inputs throw `WaferBlockedError`; catch it and return a 4xx. The error
   exposes `.categories` (e.g. `["pii","injection"]`) — the same value the gateway
   sends as the `x-wafer-categories` header, so one handler covers binding + gateway.
+- A mid-stream block (secrets/PII/blocklist set to block) terminates the stream
+  with a final `data:` event carrying the legacy `response` marker AND the
+  unified `{wafer:{blocked:true,categories:[…]}}` object — identical shape to
+  the gateway's in-band stream block.
 
 ## How it behaves
 
@@ -44,7 +48,10 @@ description: Instrument Cloudflare Workers AI (env.AI binding) calls with Wafer 
 - The optional LLM judge runs via the Worker's own `env.AI` binding (no extra
   Wafer round-trip) against the policy set in the console.
 - Pass `profile: "<name>"` in opts to apply a named posture override from the
-  project (the binding equivalent of the gateway's `x-wafer-profile` header).
+  project (the binding equivalent of the gateway's `x-wafer-profile` header),
+  or pass `(model, inputs) => name` to select a profile per binding call.
+- Pass `onDecision(report)` to consume decision, category, profile, finding and
+  timing metadata in application code. Callback failures never affect inference.
 - Policy + telemetry settings are fetched from the project config (cached).
   Logs model, decision, findings, tokens and latency; request/response content
   is captured when the project enables it (override: `log:"metadata"` never,

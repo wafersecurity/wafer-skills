@@ -34,11 +34,15 @@ wafer budget my-app 1000000             # or: off
 wafer spend my-app 5                     # $5/day  (or: off, or: monthly 100)
 wafer retry my-app 2 gpt-4o-mini         # retries + fallback model (or: off)
 wafer webhook my-app https://ingest.heystack.dev/wafer   # stream decisions (or: off)
+wafer logging my-app metadata          # content or metadata-only telemetry
 wafer export my-app csv                   # export logs for audit (csv|json)
 
 wafer test my-app "email me at jane@acme.com"   # run guardrails, no model call
+wafer test my-app "..." --mode deterministic --profile enrich   # reproducible eval (no model calls)
 wafer logs my-app --limit 20
-wafer analytics my-app
+wafer logs my-app --decision block --category secret --since 24h   # filtered history
+wafer logs my-app --follow          # live tail (Ctrl+C to stop)
+wafer analytics my-app              # usage + per-profile breakdown
 wafer init my-app                       # print gateway base URLs for the SDK
 
 wafer keys list | create <name> | revoke <id>

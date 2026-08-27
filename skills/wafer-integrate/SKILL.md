@@ -48,6 +48,15 @@ Goal: route the app's existing LLM calls through the project's Wafer gateway URL
    wafer test <project> "my email is jane@acme.com"   # expect a pii redaction
    ```
 
+## Decision reports (optional)
+
+For benchmarks/audits, send `x-wafer-report: summary` (decision headers on the
+response: `x-wafer-decision`, `x-wafer-findings`, `x-wafer-guard-ms`) or
+`x-wafer-report: detailed` (every guardrail runs synchronously; adds
+`x-wafer-timings` per-check latency attribution; streaming responses carry the
+full report as a trailing SSE event). Off by default — normal requests pay zero
+report overhead.
+
 ## Rules
 
 - Do **not** change or move the provider API key — Wafer passes it through.
